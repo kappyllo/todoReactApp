@@ -1,0 +1,54 @@
+import { useState } from "react";
+import TodoItem from "./TodoItem";
+import TasksSum from "./TasksSum";
+import AddTask from "./AddTask";
+
+const INITIAL_ITEMS = [
+  { id: 1, name: "clean up smth", isDone: false },
+  { id: 2, name: "cos kurwa innego", isDone: false },
+];
+
+export default function TodoList() {
+  const [items, setItems] = useState(INITIAL_ITEMS);
+
+  function removeItem(itemId: number) {
+    setItems((current) =>
+      current.filter((task) => {
+        return task.id !== itemId;
+      })
+    );
+  }
+
+  function changeIsDone(itemId: number) {
+    const newState = items.map((obj) => {
+      if (obj.id === itemId) {
+        const currIsDone = obj.isDone;
+        return { ...obj, isDone: !currIsDone };
+      }
+
+      return obj;
+    });
+
+    setItems(newState);
+  }
+
+  return (
+    <>
+      <ul>
+        {items.map((item) => (
+          <TodoItem
+            onRemove={removeItem}
+            id={item.id}
+            key={item.id}
+            done={item.isDone}
+            handleChangeIsDone={changeIsDone}
+          >
+            {item.name}
+          </TodoItem>
+        ))}
+      </ul>
+      <AddTask />
+      <TasksSum items={items} />
+    </>
+  );
+}
