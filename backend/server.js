@@ -24,9 +24,9 @@ app.get("/", (req, res) => {
 });
 
 // app.get("/createTaskLol", (req, res) => {
-//   // res.send("users dziala");
 //   const testowyTaskMDb = new taskModel({
-//     name: "polak",
+//     id: Math.random(),
+//     name: "kodowanko",
 //     isDone: true,
 //   });
 

@@ -1,5 +1,4 @@
 import { configureStore, createSlice } from "@reduxjs/toolkit";
-import { act } from "react-dom/test-utils";
 
 const INITIAL_ITEMS_STATE = [{ id: 1, name: "Loading...", isDone: false }];
 

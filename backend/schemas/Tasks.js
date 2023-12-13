@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const taskSchema = new mongoose.Schema({
-  // id: Number,
+  id: Number,
   name: String,
   isDone: Boolean,
 });
