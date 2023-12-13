@@ -1,4 +1,5 @@
 import { configureStore, createSlice } from "@reduxjs/toolkit";
+import { act } from "react-dom/test-utils";
 
 const INITIAL_ITEMS_STATE = [{ id: 1, name: "Loading...", isDone: false }];
 
@@ -36,6 +37,12 @@ const taskSlice = createSlice({
       });
 
       state = newState;
+      return state;
+    },
+    loadFetchedItems(state, action) {
+      const newState = action.payload;
+      state = newState;
+
       return state;
     },
   },

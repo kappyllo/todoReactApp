@@ -6,18 +6,24 @@ import { useFetch } from "../hooks/useFetch";
 
 import { useEffect } from "react";
 
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { taskActions } from "../store";
 
 export default function TodoList() {
+  const dispatch = useDispatch();
   let items = useSelector((state: any) => state.tasks);
 
   // ponizej testy
 
   const loadedItems = useFetch("http://localhost:8080/getTasks");
 
-  if (loadedItems !== null) {
-    items = loadedItems;
-  }
+  useEffect(() => {
+    if (loadedItems !== null) {
+      // items = loadedItems;
+      dispatch(taskActions.loadFetchedItems(loadedItems));
+      console.log(loadedItems);
+    }
+  }, [loadedItems]);
 
   // powyzej testy
 
