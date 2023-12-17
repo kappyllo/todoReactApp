@@ -1,3 +1,4 @@
+import SaveButton from "./components/SaveButton";
 import TodoList from "./components/TodoList";
 
 function App() {
@@ -5,6 +6,7 @@ function App() {
     <>
       <main className="flex flex-col mt-20 items-center w-screen h-screen">
         <TodoList />
+        <SaveButton />
       </main>
     </>
   );
