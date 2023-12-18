@@ -13,6 +13,7 @@ const corsOptions = {
 };
 const app = express();
 app.use(cors(corsOptions));
+app.use(express.json());
 const port = 8080;
 
 async function connect() {
@@ -32,11 +33,6 @@ app.get("/", (req, res) => {
 
 app.get("/getTasks", async (req, res) => {
   try {
-    // res.set({
-    //   "Content-Type": "application/json",
-    //   "Access-Control-Allow-Origin": "*",
-    //   "Access-Control-Allow-Credentials": true,
-    // });
     const tasks = await taskModel.find();
     res.json(tasks);
   } catch (err) {
@@ -59,13 +55,39 @@ app.get("/getTasks", async (req, res) => {
 
 app.put("/save", async (req, res) => {
   try {
-    const resJS = res.body.json();
-    const response = new taskModel({
-      id: resJS.id,
-      name: resJS.name,
-      isDone: resJS.isDone,
+    const newData = {
+      id: await req.body.id,
+      name: await req.body.name,
+      isDone: await req.body.isDone,
+    };
+
+    taskModel.find({}, (err, documents) => {
+      // tu ogarnac cos
+      if (err) {
+        console.error("Błąd podczas wyszukiwania dokumentów:", err);
+      } else {
+        documents.forEach((document) => {
+          // Zastosuj aktualizację dla każdego dokumentu
+          document.set(newData);
+          document.save((err, updatedDocument) => {
+            if (err) {
+              console.error(
+                "Błąd podczas zapisywania zaktualizowanego dokumentu:",
+                err
+              );
+            } else {
+              console.log(
+                "Dokument zaktualizowany pomyślnie:",
+                updatedDocument
+              );
+            }
+          });
+        });
+      }
     });
+
     response.save();
+    res.send("Tasks updated");
   } catch (err) {
     res.status(500).json({ message: err.message });
     console.log("error");
