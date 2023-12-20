@@ -8,7 +8,7 @@ const uri = process.env.DATABASE_URL;
 const cors = require("cors");
 const corsOptions = {
   origin: "*",
-  credentials: true, //access-control-allow-credentials:true
+  credentials: true,
   optionSuccessStatus: 200,
 };
 const app = express();
@@ -40,18 +40,6 @@ app.get("/getTasks", async (req, res) => {
     console.log("error??");
   }
 });
-
-// app.get("/createTaskLol", (req, res) => {
-//   const testowyTaskMDb = new taskModel({
-//     id: Math.random(),
-//     name: "kodowanko",
-//     isDone: true,
-//   });
-
-//   testowyTaskMDb.save();
-
-//   res.send("dodano");
-// });
 
 app.put("/save", async (req, res) => {
   try {
