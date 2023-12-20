@@ -55,42 +55,21 @@ app.get("/getTasks", async (req, res) => {
 
 app.put("/save", async (req, res) => {
   try {
-    const newData = {
-      id: await req.body.id,
-      name: await req.body.name,
-      isDone: await req.body.isDone,
-    };
+    // Pobierz dane do zaktualizowania z ciała zapytania
+    const newData = req.body;
 
-    taskModel.find({}, (err, documents) => {
-      // tu ogarnac cos
-      if (err) {
-        console.error("Błąd podczas wyszukiwania dokumentów:", err);
-      } else {
-        documents.forEach((document) => {
-          // Zastosuj aktualizację dla każdego dokumentu
-          document.set(newData);
-          document.save((err, updatedDocument) => {
-            if (err) {
-              console.error(
-                "Błąd podczas zapisywania zaktualizowanego dokumentu:",
-                err
-              );
-            } else {
-              console.log(
-                "Dokument zaktualizowany pomyślnie:",
-                updatedDocument
-              );
-            }
-          });
-        });
-      }
-    });
+    // Usuń wszystkie istniejące dokumenty w kolekcji
+    await taskModel.deleteMany({});
 
-    response.save();
-    res.send("Tasks updated");
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-    console.log("error");
+    // Wstaw nowe dane
+    await taskModel.insertMany(newData);
+
+    res.status(200).json({ message: "Baza danych została zaktualizowana." });
+  } catch (error) {
+    console.error("Błąd podczas aktualizacji bazy danych:", error);
+    res
+      .status(500)
+      .json({ error: "Wystąpił błąd podczas aktualizacji bazy danych." });
   }
 });
 
